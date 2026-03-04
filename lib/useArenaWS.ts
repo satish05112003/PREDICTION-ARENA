@@ -66,6 +66,7 @@ export function useArenaWS(url: string) {
     const [reviveAnim, setReviveAnim] = useState(false);
     const [latestEval, setLatestEval] = useState<PredictionLog | null>(null);
     const [snapFlash, setSnapFlash] = useState<{ result: 'WIN' | 'LOSS'; tf: string } | null>(null);
+    const [latestML, setLatestML] = useState<any>(null);
 
     function handle(msg: WSMessage) {
         switch (msg.type) {
@@ -80,6 +81,7 @@ export function useArenaWS(url: string) {
                 if (msg.data.dailyStats) setDailyStats(msg.data.dailyStats);
                 if (msg.data.lifetimeStats) setLifetime(msg.data.lifetimeStats);
                 if (msg.data.price) setPrice(msg.data.price);
+                if (msg.data.latestML) setLatestML(msg.data.latestML);
                 setConnected(msg.data.connected ?? true);
                 break;
             case 'TICK': setPrice(msg.data.price); setCurrentCandle(msg.data.currentCandle); break;
@@ -108,6 +110,7 @@ export function useArenaWS(url: string) {
             case 'DAILY_RESET': setDailyStats(msg.data); break;
             case 'LIFETIME_STATS': setLifetime(msg.data); break;
             case 'IST_TICK': setISTTick(msg.data); break;
+            case 'ML_PREDICTION': setLatestML(msg.data); break;
         }
     }
 
@@ -142,6 +145,6 @@ export function useArenaWS(url: string) {
         connected, price, candles1m, candles, tfIndicators, predictions,
         ai, history, snapshots, generations, dailyStats, lifetimeStats, istTick,
         lifeAnimation: lifeAnim, deathAnimation: deathAnim, reviveAnimation: reviveAnim,
-        latestEvaluation: latestEval, snapshotFlash: snapFlash,
+        latestEvaluation: latestEval, snapshotFlash: snapFlash, latestML
     };
 }

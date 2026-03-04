@@ -52,7 +52,7 @@ let state = {
     tfIndicators: {}, indicators: {},
     predictions: { '5m': null, '15m': null, '30m': null, '1h': null },
     pendingEvaluations: [], history: [], snapshots: [], snapshotFiredKeys: new Set(),
-    recentPreds: [],
+    recentPreds: [], latestML: null,
     aiLIVE: freshAI(1), aiSNAP: freshAI(1),
     generationsLIVE: [], generationsSNAP: [],
     dailyStatsLIVE: freshDaily(), dailyStatsSNAP: freshDaily(),
@@ -100,6 +100,7 @@ function loadPersisted() {
 
         if (s.snapshots) state.snapshots = s.snapshots;
         if (s.history) state.history = s.history.slice(0, 500);
+        if (s.latestML) state.latestML = s.latestML;
         if (s.snapshotFiredKeys) state.snapshotFiredKeys = new Set(s.snapshotFiredKeys);
 
         if (s.dailyStatsLIVE && s.dailyStatsLIVE.date === istDateStr()) { state.dailyStatsLIVE = s.dailyStatsLIVE; state.dailyStatsSNAP = s.dailyStatsSNAP || JSON.parse(JSON.stringify(s.dailyStatsLIVE)); }
@@ -645,6 +646,20 @@ function createSnapshot(tf) {
     };
     state.snapshots.unshift(snap); if (state.snapshots.length > 200) state.snapshots.pop();
     console.log(`[IST] Snapshot ${tf} | ${pred.direction} ${pred.confidence}% | $${state.price.toFixed(2)}`);
+
+    // --- PYTHON ML INTEGRATION ---
+    if (tf === '5m') {
+        fetch('http://127.0.0.1:5000/snapshot', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: snap.id, timestamp: snap.snapshotTimeIST, price: state.price, indicators: pred.S })
+        }).then(r => r.json()).then(data => {
+            if (data && data.prediction) {
+                state.latestML = data.prediction;
+                broadcast({ type: 'ML_PREDICTION', data: data.prediction });
+            }
+        }).catch(err => console.error('[ML] Snapshot POST error:', err.message));
+    }
+
     broadcast({ type: 'SNAPSHOT_CREATED', data: snap });
     broadcast({ type: 'SNAPSHOTS_UPDATE', data: state.snapshots.slice(0, 50) });
 }
@@ -678,6 +693,15 @@ function evalSnapshots() {
         if (s.result === 'WIN') { state.dailyStatsSNAP.snapshots.wins++; state.lifetimeStatsSNAP.snapWins++; }
         else if (s.result === 'LOSS') state.lifetimeStatsSNAP.snapLosses++;
         broadcast({ type: 'SNAPSHOT_EVALUATED', data: s }); changed = true;
+
+        // --- PYTHON ML INTEGRATION RESOLVE ---
+        if (s.timeframe === '5m' && s.result !== 'DRAW') {
+            const isLatest = state.latestML && state.latestML.id === s.id;
+            fetch('http://127.0.0.1:5000/resolve', {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: s.id, close_price: state.price, ml_prediction: isLatest ? state.latestML.prediction : null, ml_confidence: isLatest ? state.latestML.confidence : null, timestamp: fmtIST(Date.now()), snapshot_price: s.snapshotPrice })
+            }).catch(err => console.error('[ML] Resolve error:', err.message));
+        }
     }
     if (changed) { broadcast({ type: 'SNAPSHOTS_UPDATE', data: state.snapshots.slice(0, 50) }); persist(); }
 }
@@ -695,7 +719,7 @@ wss.on('connection', ws => {
             generations: { live: state.generationsLIVE, snap: state.generationsSNAP },
             dailyStats: { live: state.dailyStatsLIVE, snap: state.dailyStatsSNAP },
             lifetimeStats: { live: state.lifetimeStatsLIVE, snap: state.lifetimeStatsSNAP },
-            connected: state.connected, price: state.price,
+            connected: state.connected, price: state.price, latestML: state.latestML
         }
     }));
     ws.on('close', () => clients.delete(ws));

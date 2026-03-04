@@ -40,5 +40,19 @@ module.exports = {
             error_file: './logs/frontend-error.log',
             time: true,
         },
+        {
+            name: 'btc-arena-python-ml',
+            script: 'app.py',
+            cwd: __dirname + '/server/ml',
+            interpreter: 'python',
+            watch: false,
+            autorestart: true,
+            max_restarts: 9999,
+            restart_delay: 3000,
+            log_file: '../../logs/python-ml-combined.log',
+            out_file: '../../logs/python-ml-out.log',
+            error_file: '../../logs/python-ml-error.log',
+            time: true,
+        }
     ],
 };

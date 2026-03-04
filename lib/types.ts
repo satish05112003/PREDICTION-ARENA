@@ -95,4 +95,5 @@ export type WSMessage =
     | { type: 'DAILY_STATS'; data: DualDailyStats }
     | { type: 'DAILY_RESET'; data: DualDailyStats }
     | { type: 'LIFETIME_STATS'; data: DualLifetimeStats }
-    | { type: 'IST_TICK'; data: ISTTick };
+    | { type: 'IST_TICK'; data: ISTTick }
+    | { type: 'ML_PREDICTION'; data: any };

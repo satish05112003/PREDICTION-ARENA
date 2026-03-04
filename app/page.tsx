@@ -13,6 +13,7 @@ import EvaluationToast from '@/components/EvaluationToast';
 import ISTSnapshotArena from '@/components/ISTSnapshotArena';
 import GenerationHistory from '@/components/GenerationHistory';
 import PerformancePanel from '@/components/PerformancePanel';
+import { MLPredictionPanel } from '@/components/MLPredictionPanel';
 
 const LiveChart = dynamic(() => import('@/components/LiveChart'), { ssr: false });
 
@@ -26,7 +27,7 @@ export default function ArenaPage() {
         connected, price, candles1m, tfIndicators, predictions,
         ai, history, snapshots, generations, dailyStats, lifetimeStats, istTick,
         lifeAnimation, deathAnimation, reviveAnimation,
-        latestEvaluation, snapshotFlash,
+        latestEvaluation, snapshotFlash, latestML
     } = useArenaWS(WS_URL);
 
     // Aggregate 1m candles to selected TF for chart display
@@ -67,6 +68,7 @@ export default function ArenaPage() {
                         <div className="flex flex-col gap-4 overflow-y-auto" style={{ maxHeight: '520px' }}>
                             <AIStatusPanel ai={ai} lifeAnimation={lifeAnimation} deathAnimation={deathAnimation} reviveAnimation={reviveAnimation} />
                             <PredictionsPanel predictions={predictions} />
+                            <MLPredictionPanel latestML={latestML} currentIndicators={tfIndicators['5m']} />
                         </div>
                     </div>
 
