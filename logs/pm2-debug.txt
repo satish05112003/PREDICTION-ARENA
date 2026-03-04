@@ -1,0 +1,54 @@
+﻿[1m[90m[TAILING] Tailing last 50 lines for [btc-arena-frontend] process (change the value with --lines option)[39m[22m
+[90mC:\Users\satis\OneDrive\Desktop\BTC-PREDICTION-ARENA\logs\frontend-out.log last 50 lines:[39m
+[90mC:\Users\satis\OneDrive\Desktop\BTC-PREDICTION-ARENA\logs\frontend-error.log last 50 lines:[39m
+[31m1|btc-aren | [39m2026-03-04T20:26:15: 
+[31m1|btc-aren | [39m2026-03-04T20:26:15: Node.js v22.18.0
+[31m1|btc-aren | [39m2026-03-04T20:26:20: C:\PROGRAM FILES\NODEJS\NPM.CMD:1
+[31m1|btc-aren | [39m2026-03-04T20:26:20: :: Created by npm, please don't edit manually.
+[31m1|btc-aren | [39m2026-03-04T20:26:20: ^
+[31m1|btc-aren | [39m2026-03-04T20:26:20: 
+[31m1|btc-aren | [39m2026-03-04T20:26:20: SyntaxError: Unexpected token ':'
+[31m1|btc-aren | [39m2026-03-04T20:26:20:     at wrapSafe (node:internal/modules/cjs/loader:1620:18)
+[31m1|btc-aren | [39m2026-03-04T20:26:20:     at Module._compile (node:internal/modules/cjs/loader:1662:20)
+[31m1|btc-aren | [39m2026-03-04T20:26:20:     at Object..js (node:internal/modules/cjs/loader:1820:10)
+[31m1|btc-aren | [39m2026-03-04T20:26:20:     at Module.load (node:internal/modules/cjs/loader:1423:32)
+[31m1|btc-aren | [39m2026-03-04T20:26:20:     at Function._load (node:internal/modules/cjs/loader:1246:12)
+[31m1|btc-aren | [39m2026-03-04T20:26:20:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+[31m1|btc-aren | [39m2026-03-04T20:26:20:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+[31m1|btc-aren | [39m2026-03-04T20:26:20:     at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)
+[31m1|btc-aren | [39m2026-03-04T20:26:20:     at node:internal/main/run_main_module:36:49
+[31m1|btc-aren | [39m2026-03-04T20:26:20: 
+[31m1|btc-aren | [39m2026-03-04T20:26:20: Node.js v22.18.0
+[31m1|btc-aren | [39m2026-03-04T20:26:25: C:\PROGRAM FILES\NODEJS\NPM.CMD:1
+[31m1|btc-aren | [39m2026-03-04T20:26:25: :: Created by npm, please don't edit manually.
+[31m1|btc-aren | [39m2026-03-04T20:26:25: ^
+[31m1|btc-aren | [39m2026-03-04T20:26:25: 
+[31m1|btc-aren | [39m2026-03-04T20:26:25: SyntaxError: Unexpected token ':'
+[31m1|btc-aren | [39m2026-03-04T20:26:25:     at wrapSafe (node:internal/modules/cjs/loader:1620:18)
+[31m1|btc-aren | [39m2026-03-04T20:26:25:     at Module._compile (node:internal/modules/cjs/loader:1662:20)
+[31m1|btc-aren | [39m2026-03-04T20:26:25:     at Object..js (node:internal/modules/cjs/loader:1820:10)
+[31m1|btc-aren | [39m2026-03-04T20:26:25:     at Module.load (node:internal/modules/cjs/loader:1423:32)
+[31m1|btc-aren | [39m2026-03-04T20:26:25:     at Function._load (node:internal/modules/cjs/loader:1246:12)
+[31m1|btc-aren | [39m2026-03-04T20:26:25:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+[31m1|btc-aren | [39m2026-03-04T20:26:25:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+[31m1|btc-aren | [39m2026-03-04T20:26:25:     at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)
+[31m1|btc-aren | [39m2026-03-04T20:26:25:     at node:internal/main/run_main_module:36:49
+[31m1|btc-aren | [39m2026-03-04T20:26:25: 
+[31m1|btc-aren | [39m2026-03-04T20:26:25: Node.js v22.18.0
+[31m1|btc-aren | [39m2026-03-04T20:26:31: C:\PROGRAM FILES\NODEJS\NPM.CMD:1
+[31m1|btc-aren | [39m2026-03-04T20:26:31: :: Created by npm, please don't edit manually.
+[31m1|btc-aren | [39m2026-03-04T20:26:31: ^
+[31m1|btc-aren | [39m2026-03-04T20:26:31: 
+[31m1|btc-aren | [39m2026-03-04T20:26:31: SyntaxError: Unexpected token ':'
+[31m1|btc-aren | [39m2026-03-04T20:26:31:     at wrapSafe (node:internal/modules/cjs/loader:1620:18)
+[31m1|btc-aren | [39m2026-03-04T20:26:31:     at Module._compile (node:internal/modules/cjs/loader:1662:20)
+[31m1|btc-aren | [39m2026-03-04T20:26:31:     at Object..js (node:internal/modules/cjs/loader:1820:10)
+[31m1|btc-aren | [39m2026-03-04T20:26:31:     at Module.load (node:internal/modules/cjs/loader:1423:32)
+[31m1|btc-aren | [39m2026-03-04T20:26:31:     at Function._load (node:internal/modules/cjs/loader:1246:12)
+[31m1|btc-aren | [39m2026-03-04T20:26:31:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+[31m1|btc-aren | [39m2026-03-04T20:26:31:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+[31m1|btc-aren | [39m2026-03-04T20:26:31:     at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)
+[31m1|btc-aren | [39m2026-03-04T20:26:31:     at node:internal/main/run_main_module:36:49
+[31m1|btc-aren | [39m2026-03-04T20:26:31: 
+[31m1|btc-aren | [39m2026-03-04T20:26:31: Node.js v22.18.0
+

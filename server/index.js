@@ -74,6 +74,7 @@ function persist() {
             lifetimeStatsLIVE: state.lifetimeStatsLIVE, lifetimeStatsSNAP: state.lifetimeStatsSNAP,
             dailyStatsLIVE: state.dailyStatsLIVE, dailyStatsSNAP: state.dailyStatsSNAP,
             snapshots: state.snapshots.slice(0, 200),
+            history: state.history.slice(0, 500),
             snapshotFiredKeys: [...state.snapshotFiredKeys].slice(-300),
             aiLIVE: {
                 generation: state.aiLIVE.generation, startTime: state.aiLIVE.startTime,
@@ -98,6 +99,7 @@ function loadPersisted() {
         else if (s.lifetimeStats) { state.lifetimeStatsLIVE = { ...freshLifetime(), ...s.lifetimeStats }; state.lifetimeStatsSNAP = { ...freshLifetime(), ...s.lifetimeStats }; }
 
         if (s.snapshots) state.snapshots = s.snapshots;
+        if (s.history) state.history = s.history.slice(0, 500);
         if (s.snapshotFiredKeys) state.snapshotFiredKeys = new Set(s.snapshotFiredKeys);
 
         if (s.dailyStatsLIVE && s.dailyStatsLIVE.date === istDateStr()) { state.dailyStatsLIVE = s.dailyStatsLIVE; state.dailyStatsSNAP = s.dailyStatsSNAP || JSON.parse(JSON.stringify(s.dailyStatsLIVE)); }
@@ -117,7 +119,7 @@ function loadPersisted() {
 
         state.lifetimeStatsLIVE.totalGenerations = Math.max(state.aiLIVE.generation, state.generationsLIVE.length + 1);
         state.lifetimeStatsSNAP.totalGenerations = Math.max(state.aiSNAP.generation, state.generationsSNAP.length + 1);
-        console.log(`[PERSIST] Gen LIVE:${state.aiLIVE.generation} SNAP:${state.aiSNAP.generation} | ${state.snapshots.length} snaps`);
+        console.log(`[PERSIST] Gen LIVE:${state.aiLIVE.generation} SNAP:${state.aiSNAP.generation} | ${state.snapshots.length} snaps | ${state.history.length} history`);
     } catch (e) { console.error('[PERSIST] load fail:', e.message); }
 }
 
@@ -521,6 +523,7 @@ function checkDailyReset() {
 }
 
 // ─── CANDLE PROCESSING ────────────────────────────────────────────────────────
+let lastTickBroadcast = 0;
 function processTick(price, qty, tradeTime) {
     state.price = price; state.lastTick = tradeTime;
     const bkt = Math.floor(tradeTime / (60 * 1000)) * 60;
@@ -542,7 +545,12 @@ function processTick(price, qty, tradeTime) {
         state.currentCandle.close = price;
         state.currentCandle.volume += qty;
     }
-    broadcast({ type: 'TICK', data: { price, time: tradeTime, currentCandle: state.currentCandle } });
+    // Broadcast tick immediately (throttled to max 10/sec to prevent flooding)
+    const now = Date.now();
+    if (now - lastTickBroadcast >= 100) {
+        lastTickBroadcast = now;
+        broadcast({ type: 'TICK', data: { price, time: tradeTime, currentCandle: state.currentCandle } });
+    }
 }
 
 // ─── COINBASE ─────────────────────────────────────────────────────────────────
@@ -682,7 +690,8 @@ wss.on('connection', ws => {
         type: 'INIT', data: {
             baseCandles: state.baseCandles.slice(-300), tfIndicators: state.tfIndicators,
             indicators: state.indicators, predictions: state.predictions,
-            ai: { live: state.aiLIVE, snap: state.aiSNAP }, history: state.history, snapshots: state.snapshots.slice(0, 50),
+            ai: { live: state.aiLIVE, snap: state.aiSNAP }, history: state.history.slice(0, 200),
+            snapshots: state.snapshots.slice(0, 50),
             generations: { live: state.generationsLIVE, snap: state.generationsSNAP },
             dailyStats: { live: state.dailyStatsLIVE, snap: state.dailyStatsSNAP },
             lifetimeStats: { live: state.lifetimeStatsLIVE, snap: state.lifetimeStatsSNAP },
